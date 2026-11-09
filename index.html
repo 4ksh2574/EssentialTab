@@ -85,6 +85,18 @@
 }
 @media(prefers-reduced-motion:reduce){.brandmark,.brandmark-label{transition:none!important}}
 
+
+/* Collapsed search: anchor the magnifier to the exact center of its circle */
+.searchbox.collapsed{display:flex!important;position:relative!important;align-items:center!important;justify-content:center!important}
+.searchbox.collapsed>svg{
+ position:absolute!important;left:50%!important;top:50%!important;right:auto!important;bottom:auto!important;
+ display:block!important;width:19px!important;height:19px!important;flex:none!important;
+ margin:0!important;padding:0!important;transform:translate(-50%,-50%)!important;
+}
+@media(max-width:570px){
+ .searchbox.collapsed>svg{width:17px!important;height:17px!important}
+}
+
 /* Final alignment pass: center the artwork, not its transparent SVG canvas */
 .brand{height:40px!important;min-width:40px!important;flex:0 0 40px!important;align-items:center!important}
 .brandmark{
