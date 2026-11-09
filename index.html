@@ -461,25 +461,26 @@ const $=id=>document.getElementById(id),store={get(k,f){try{const v=localStorage
 const brandmark=$('brandmark'),brandmarkTrigger=$('brandmarkTrigger'),brandmarkConfig=$('brandmarkConfig');
 function openGlassSettings(){
  if(brandmark.classList.contains('is-expanded'))return;
- brandmark.style.height=brandmark.getBoundingClientRect().height+'px';
+ brandmark.style.setProperty('height',brandmark.getBoundingClientRect().height+'px','important');
  brandmark.classList.add('is-expanded');
  brandmark.setAttribute('aria-expanded','true');
  brandmarkConfig.setAttribute('aria-hidden','false');
  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-  brandmark.style.height=brandmark.scrollHeight+'px';
+  brandmark.style.setProperty('height',brandmark.scrollHeight+'px','important');
  }));
 }
 function closeGlassSettings(){
  if(!brandmark.classList.contains('is-expanded'))return;
  const current=brandmark.getBoundingClientRect().height;
- brandmark.style.height=current+'px';
+ brandmark.style.setProperty('height',current+'px','important');
  brandmark.getBoundingClientRect();
  brandmark.classList.remove('is-expanded');
  brandmark.setAttribute('aria-expanded','false');
  brandmarkConfig.setAttribute('aria-hidden','true');
- requestAnimationFrame(()=>{brandmark.style.height='40px'});
+ requestAnimationFrame(()=>{brandmark.style.setProperty('height','40px','important')});
 }
 brandmarkTrigger.addEventListener('click',()=>brandmark.classList.contains('is-expanded')?closeGlassSettings():openGlassSettings());
+brandmark.addEventListener('transitionend',e=>{if(e.propertyName==='height'&&brandmark.classList.contains('is-expanded'))brandmark.style.setProperty('height','auto','important')});
 $('closeGlassSettings').onclick=closeGlassSettings;
 document.addEventListener('pointerdown',e=>{if(brandmark.classList.contains('is-expanded')&&!brandmark.contains(e.target))closeGlassSettings()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&brandmark.classList.contains('is-expanded'))closeGlassSettings()});
