@@ -85,6 +85,41 @@
 }
 @media(prefers-reduced-motion:reduce){.brandmark,.brandmark-label{transition:none!important}}
 
+/* Final alignment pass: center the artwork, not its transparent SVG canvas */
+.brand{height:40px!important;min-width:40px!important;flex:0 0 40px!important;align-items:center!important}
+.brandmark{
+ box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:center!important;
+ width:40px!important;height:40px!important;min-width:40px!important;max-width:40px!important;flex:0 0 40px!important;
+ padding:0!important;border-radius:50%!important;gap:0!important;line-height:0!important;
+}
+.brandmark img{
+ display:block!important;flex:0 0 27px!important;width:27px!important;height:24px!important;
+ max-width:27px!important;max-height:24px!important;object-fit:contain!important;object-position:50% 50%!important;
+ margin:0!important;padding:0!important;transform:none!important;
+}
+.brandmark.is-expanded{justify-content:flex-start!important;width:142px!important;max-width:142px!important;flex-basis:142px!important;padding:0 12px!important;border-radius:999px!important}
+.brandmark.is-expanded img{flex-basis:27px!important}
+.hero-topline{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:center!important}
+.searchbox.collapsed{
+ box-sizing:border-box!important;display:grid!important;place-items:center!important;
+ width:48px!important;min-width:48px!important;max-width:48px!important;height:48px!important;
+ flex:0 0 48px!important;padding:0!important;gap:0!important;line-height:0!important;
+}
+.searchbox.collapsed>svg{
+ position:static!important;display:block!important;inset:auto!important;
+ width:19px!important;height:19px!important;flex:0 0 19px!important;
+ margin:0!important;padding:0!important;transform:none!important;align-self:auto!important;
+}
+@media(max-width:570px){
+ .brand{height:36px!important;min-width:36px!important;flex-basis:36px!important}
+ .brandmark{width:36px!important;height:36px!important;min-width:36px!important;max-width:36px!important;flex-basis:36px!important}
+ .brandmark img{flex-basis:24px!important;width:24px!important;height:21px!important;max-width:24px!important;max-height:21px!important}
+ .brandmark.is-expanded{width:132px!important;max-width:132px!important;flex-basis:132px!important;padding:0 10px!important}
+ .searchbox.collapsed{width:44px!important;min-width:44px!important;max-width:44px!important;height:44px!important;flex-basis:44px!important}
+ .searchbox.collapsed>svg{width:17px!important;height:17px!important;flex-basis:17px!important}
+}
+
+
 </style></head>
 <body><div class="ambient"><i class="blob a"></i><i class="blob b"></i><i class="blob c"></i></div><div class="grain"></div>
 <div class="shell">
