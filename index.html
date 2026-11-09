@@ -323,6 +323,84 @@ html[data-theme=dark]{background-image:linear-gradient(135deg,rgba(5,23,19,.68),
 @media(max-width:570px){.brand{width:36px!important;height:36px!important;flex-basis:36px!important}.brandmark{width:36px!important;height:36px!important}.brandmark-trigger{height:34px;padding:0 7px}.brandmark.is-expanded{width:min(330px,calc(100vw - 30px))!important}.brandmark.is-expanded .brandmark-trigger{height:44px;padding:0 10px}.brandmark-config{padding:0 13px 14px}.brandmark-config h2{font-size:17px}}
 @media(prefers-reduced-motion:reduce){.brandmark,.brandmark-config,.brandmark-label{transition:none!important}}
 
+
+/* Match the weather pill's organic, content-led expansion from the AXo mark */
+.brandmark{
+  height:auto!important;
+  max-height:calc(100svh - 76px)!important;
+  border-radius:24px!important;
+  transform:translateZ(0);
+  transform-origin:top left;
+  transition:
+    width .55s cubic-bezier(.2,.9,.2,1),
+    max-height .55s cubic-bezier(.2,.9,.2,1),
+    border-radius .45s cubic-bezier(.2,.9,.2,1),
+    box-shadow .35s ease,
+    background .35s ease!important;
+}
+.brandmark-trigger{
+  min-height:40px!important;
+  height:40px!important;
+  gap:9px!important;
+  padding:0 9px!important;
+  transition:min-height .55s cubic-bezier(.2,.9,.2,1),height .55s cubic-bezier(.2,.9,.2,1),padding .45s cubic-bezier(.2,.9,.2,1),gap .45s cubic-bezier(.2,.9,.2,1);
+}
+.brandmark-trigger img{
+  width:23px!important;height:21px!important;flex-basis:23px!important;
+  transition:width .45s cubic-bezier(.2,.9,.2,1),height .45s cubic-bezier(.2,.9,.2,1),flex-basis .45s cubic-bezier(.2,.9,.2,1),filter .35s;
+}
+.brandmark-config{
+  box-sizing:border-box;
+  max-height:0;
+  overflow:hidden;
+  padding:0 17px!important;
+  opacity:0;
+  transform:translateY(-9px) scaleY(.88);
+  transform-origin:top;
+  filter:blur(5px);
+  pointer-events:none;
+  transition:
+    max-height .55s cubic-bezier(.2,.9,.2,1),
+    opacity .3s ease,
+    transform .55s cubic-bezier(.2,.9,.2,1),
+    filter .45s ease,
+    padding .4s cubic-bezier(.2,.9,.2,1)!important;
+}
+.brandmark.is-expanded{
+  width:min(330px,calc(100vw - 30px))!important;
+  max-width:calc(100vw - 30px)!important;
+  max-height:calc(100svh - 76px)!important;
+  min-height:40px!important;
+  border-radius:23px!important;
+  overflow:hidden!important;
+}
+.brandmark.is-expanded .brandmark-trigger{
+  min-height:64px!important;height:64px!important;
+  padding:0 18px!important;gap:13px!important;
+}
+.brandmark.is-expanded .brandmark-trigger img{
+  width:29px!important;height:27px!important;flex-basis:29px!important;
+  filter:drop-shadow(0 2px 5px rgba(19,105,85,.22));
+}
+.brandmark.is-expanded .brandmark-config{
+  max-height:calc(100svh - 145px);
+  overflow-y:auto;
+  padding:2px 17px 17px!important;
+  opacity:1;
+  transform:translateY(0) scaleY(1);
+  filter:blur(0);
+  pointer-events:auto;
+}
+@media(max-width:570px){
+  .brandmark-trigger{min-height:36px!important;height:36px!important;padding:0 7px!important}
+  .brandmark.is-expanded .brandmark-trigger{min-height:58px!important;height:58px!important;padding:0 14px!important}
+  .brandmark-config{padding-left:13px!important;padding-right:13px!important}
+  .brandmark.is-expanded .brandmark-config{padding:2px 13px 14px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .brandmark,.brandmark-trigger,.brandmark-trigger img,.brandmark-config{transition:none!important}
+}
+
 </style></head>
 <body><div class="ambient"><i class="blob a"></i><i class="blob b"></i><i class="blob c"></i></div><div class="grain"></div>
 <div class="shell">
