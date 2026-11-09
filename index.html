@@ -214,29 +214,6 @@ body{background:transparent}
 .shell{position:relative;z-index:1}
 
 
-
-/* Search pill: animate the actual grid-item width and let its contents fade cleanly */
-#searchForm{
-  box-sizing:border-box!important;
-  transition:width .56s cubic-bezier(.2,.9,.2,1),
-    border-radius .5s cubic-bezier(.2,.9,.2,1),
-    padding .42s cubic-bezier(.2,.9,.2,1),gap .42s cubic-bezier(.2,.9,.2,1),
-    box-shadow .38s ease,background .38s ease,border-color .38s ease,transform .42s cubic-bezier(.2,.9,.2,1)!important;
-  will-change:width,border-radius;
-}
-#searchForm.collapsed{width:48px!important;min-width:48px!important;max-width:48px!important;height:48px!important;padding:0!important;gap:0!important;border-radius:999px!important;transform:none!important;}
-#searchForm.expanded{width:min(420px,48vw)!important;min-width:0!important;max-width:100%!important;height:48px!important;padding:5px 6px 5px 15px!important;gap:10px!important;border-radius:24px!important;}
-#searchForm input{flex:1 1 auto!important;min-width:0!important;transition:opacity .24s ease,transform .36s cubic-bezier(.2,.9,.2,1)!important;}
-#searchForm.collapsed input,#searchForm.collapsed .enter,#searchForm.collapsed .searchgo{opacity:0!important;pointer-events:none!important;}
-#searchForm.collapsed input{width:0!important;flex:0 0 0!important;}
-#searchForm.collapsed .searchgo{width:0!important;height:0!important;flex:0 0 0!important;padding:0!important;border-width:0!important;}
-#searchForm.expanded input{width:auto!important;opacity:1!important;transform:translateX(0)!important;pointer-events:auto!important;}
-@media(max-width:570px){
-  #searchForm.collapsed{width:44px!important;min-width:44px!important;max-width:44px!important;height:44px!important;}
-  #searchForm.expanded{width:min(330px,68vw)!important;height:44px!important;padding:5px 6px 5px 12px!important;}
-}
-@media(prefers-reduced-motion:reduce){#searchForm{transition:none!important;will-change:auto!important}}
-
 </style></head>
 <body><div class="ambient"><i class="blob a"></i><i class="blob b"></i><i class="blob c"></i></div><div class="grain"></div>
 <div class="shell">
@@ -304,3 +281,24 @@ $('themeBtn').onclick=()=>{const dark=document.documentElement.dataset.theme==='
 const weatherCodes={0:['Clear sky','☀️'],1:['Mainly clear','🌤️'],2:['Partly cloudy','⛅'],3:['Overcast','☁️'],45:['Fog','🌫️'],48:['Depositing rime fog','🌫️'],51:['Light drizzle','🌦️'],53:['Drizzle','🌦️'],55:['Dense drizzle','🌧️'],61:['Slight rain','🌦️'],63:['Rain','🌧️'],65:['Heavy rain','🌧️'],71:['Slight snow','🌨️'],73:['Snow','❄️'],75:['Heavy snow','❄️'],80:['Rain showers','🌦️'],81:['Rain showers','🌧️'],82:['Heavy showers','⛈️'],95:['Thunderstorm','⛈️']};function showWeather(c,t,feel,wind,city){const [desc,ico]=weatherCodes[c]||['Current conditions','🌤️'];$('miniWeather').textContent=ico;$('miniTemp').textContent=Math.round(t)+'°';$('detailDesc').textContent=desc;$('detailFeels').textContent=Math.round(feel)+'°';$('detailWind').textContent=Math.round(wind)+' km/h';$('miniCity').textContent=city;$('detailCity').textContent=city;weather.city=city}
 async function loadWeather(lat,lon,city){$('detailDesc').textContent='Checking the sky…';try{const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&timezone=auto`);if(!r.ok)throw Error('weather unavailable');const j=await r.json(),c=j.current;weather.lat=lat;weather.lon=lon;showWeather(c.weather_code,c.temperature_2m,c.apparent_temperature,c.wind_speed_10m,city);store.set('weather',{lat,lon,city})}catch{$('detailDesc').textContent='Could not load weather right now'}}async function locate(){if(!navigator.geolocation){$('detailDesc').textContent='Location is not available in this browser';return}navigator.geolocation.getCurrentPosition(async p=>{let city='Your location';try{const r=await fetch(`https://geocoding-api.open-meteo.com/v1/reverse?latitude=${p.coords.latitude}&longitude=${p.coords.longitude}&language=en&format=json`);const j=await r.json();city=j.results?.[0]?.name||city}catch{}loadWeather(p.coords.latitude,p.coords.longitude,city)},()=>{$('detailDesc').textContent='Location permission was not granted'})}async function chooseCity(){const city=prompt('Enter a city name');if(!city)return;try{const r=await fetch('https://geocoding-api.open-meteo.com/v1/search?name='+encodeURIComponent(city)+'&count=1&language=en&format=json');const j=await r.json();if(!j.results?.length){$('detailDesc').textContent='City not found';return}const p=j.results[0];loadWeather(p.latitude,p.longitude,p.name)}catch{$('detailDesc').textContent='Could not find that city'}}$('locateBtn').onclick=e=>{e.stopPropagation();locate()};$('cityBtn').onclick=e=>{e.stopPropagation();chooseCity()};function setWeatherExpanded(open){$('weatherPill').classList.toggle('expanded',open);$('weatherDetails').classList.toggle('open',open);$('weatherPillToggle').setAttribute('aria-expanded',String(open))}$('weatherPillToggle').onclick=()=>setWeatherExpanded(!$('weatherPill').classList.contains('expanded'));document.addEventListener('pointerdown',e=>{if($('weatherPill').classList.contains('expanded')&&!$('weatherPill').contains(e.target))setWeatherExpanded(false)});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('weatherPill').classList.contains('expanded'))setWeatherExpanded(false)});const oldWeather=store.get('weather',null);if(oldWeather)loadWeather(oldWeather.lat,oldWeather.lon,oldWeather.city);else{$('detailDesc').textContent='Choose a city or allow location';}
 </script></body></html>
+/* Search pill: animate the actual grid-item width and let its contents fade cleanly */
+#searchForm{
+  box-sizing:border-box!important;
+  transition:width .56s cubic-bezier(.2,.9,.2,1),
+    border-radius .5s cubic-bezier(.2,.9,.2,1),
+    padding .42s cubic-bezier(.2,.9,.2,1),gap .42s cubic-bezier(.2,.9,.2,1),
+    box-shadow .38s ease,background .38s ease,border-color .38s ease,transform .42s cubic-bezier(.2,.9,.2,1)!important;
+  will-change:width,border-radius;
+}
+#searchForm.collapsed{width:48px!important;min-width:48px!important;max-width:48px!important;height:48px!important;padding:0!important;gap:0!important;border-radius:999px!important;transform:none!important;}
+#searchForm.expanded{width:min(420px,48vw)!important;min-width:0!important;max-width:100%!important;height:48px!important;padding:5px 6px 5px 15px!important;gap:10px!important;border-radius:24px!important;}
+#searchForm input{flex:1 1 auto!important;min-width:0!important;transition:opacity .24s ease,transform .36s cubic-bezier(.2,.9,.2,1)!important;}
+#searchForm.collapsed input,#searchForm.collapsed .enter,#searchForm.collapsed .searchgo{opacity:0!important;pointer-events:none!important;}
+#searchForm.collapsed input{width:0!important;flex:0 0 0!important;}
+#searchForm.collapsed .searchgo{width:0!important;height:0!important;flex:0 0 0!important;padding:0!important;border-width:0!important;}
+#searchForm.expanded input{width:auto!important;opacity:1!important;transform:translateX(0)!important;pointer-events:auto!important;}
+@media(max-width:570px){
+  #searchForm.collapsed{width:44px!important;min-width:44px!important;max-width:44px!important;height:44px!important;}
+  #searchForm.expanded{width:min(330px,68vw)!important;height:44px!important;padding:5px 6px 5px 12px!important;}
+}
+@media(prefers-reduced-motion:reduce){#searchForm{transition:none!important;will-change:auto!important}}
