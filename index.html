@@ -16,6 +16,18 @@
 @media(max-width:700px){.blob{width:72vw;opacity:.22}.panel{backdrop-filter:blur(5px)}.shortcut,.weather-pill,.iconbtn,.brandmark{backdrop-filter:blur(5px)}.searchbox{backdrop-filter:blur(6px)}.panel{box-shadow:0 8px 20px var(--shadow),inset 0 1px 0 rgba(255,255,255,.55)}.shortcut{box-shadow:0 5px 14px var(--shadow)}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
+
+/* AXo logo button keeps one identical teal finish in every theme */
+.brandmark{
+ background:linear-gradient(145deg,rgba(225,250,242,.96),rgba(183,231,216,.88))!important;
+ border:1px solid rgba(75,164,139,.38)!important;
+ box-shadow:0 8px 24px rgba(26,112,91,.16),inset 0 1px 0 rgba(255,255,255,.96)!important;
+ backdrop-filter:blur(8px);
+}
+.brandmark img{
+ filter:drop-shadow(0 1px 2px rgba(19,105,85,.16))!important;
+}
+
 /* Stable AXo mark and pill geometry */
 .top{min-height:40px;align-items:center}
 .brand{height:40px;min-width:39px;flex:0 0 39px;align-items:center;justify-content:flex-start}
