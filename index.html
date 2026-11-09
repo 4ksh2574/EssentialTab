@@ -297,32 +297,36 @@ html[data-theme=dark]{background-image:linear-gradient(135deg,rgba(5,23,19,.68),
 .glass-control{display:grid;gap:7px;margin:13px 0}.glass-control label{display:flex;justify-content:space-between;gap:12px;font-size:11px;color:var(--muted)}.glass-control input{width:100%;accent-color:var(--accent);margin:0}.glass-note{font-size:10px;color:var(--muted);line-height:1.5}
 
 
-/* AXo Liquid Glass panel: same material as the controls, with an in-place spring reveal */
-#glassSettingsBack{background:rgba(8,24,20,.24);-webkit-backdrop-filter:blur(9px) saturate(125%);backdrop-filter:blur(9px) saturate(125%);perspective:900px}
+/* AXo settings tile: expands over the page from the logo's exact position */
+#glassSettingsBack{
+ position:fixed;inset:0;z-index:40;display:none;padding:0;place-items:initial;
+ background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;perspective:900px;
+ pointer-events:none
+}
+#glassSettingsBack.open{display:block}
 #glassSettingsBack .modal{
- position:relative;overflow:hidden;
- width:min(430px,100%);max-height:min(82svh,720px);overflow-y:auto;
- color:var(--ink);
- background:linear-gradient(145deg,rgba(235,255,247,calc(var(--axo-control-alpha) + .20)),rgba(200,238,224,calc(var(--axo-control-alpha) + .09)) 52%,rgba(225,250,240,calc(var(--axo-control-alpha) + .14)));
- border:1px solid rgba(225,255,245,var(--axo-control-edge));
+ position:fixed;left:15px;top:15px;margin:0;pointer-events:auto;
+ width:min(330px,calc(100vw - 30px));max-height:min(82svh,720px);overflow-y:auto;
+ padding:20px;color:var(--ink);border-radius:25px;transform-origin:top left;
+ background:linear-gradient(145deg,rgba(215,245,234,calc(var(--axo-control-alpha) + .07)),rgba(190,232,216,calc(var(--axo-control-alpha) + .02)) 55%,rgba(225,250,240,calc(var(--axo-control-alpha) + .05)));
+ border:1px solid rgba(220,255,244,var(--axo-control-edge));
  -webkit-backdrop-filter:blur(var(--axo-control-blur)) saturate(var(--axo-control-sat));
  backdrop-filter:blur(var(--axo-control-blur)) saturate(var(--axo-control-sat));
- box-shadow:0 24px 70px rgba(0,35,27,.19),inset 0 1px 0 rgba(255,255,255,.42),inset 0 -1px 0 rgba(255,255,255,.08);
- transform-origin:top left;
- animation:glassPanelIn .52s cubic-bezier(.18,.88,.22,1) both;
+ box-shadow:0 18px 48px var(--shadow),inset 0 1px 0 rgba(255,255,255,.52),inset 0 -1px 0 rgba(255,255,255,.08);
+ animation:glassTileExpand .62s cubic-bezier(.18,.92,.22,1) both
 }
-:root[data-theme=dark] #glassSettingsBack .modal{background:linear-gradient(145deg,rgba(20,58,48,calc(var(--axo-control-alpha) + .26)),rgba(7,34,29,calc(var(--axo-control-alpha) + .22)) 58%,rgba(17,51,43,calc(var(--axo-control-alpha) + .25)));border-color:rgba(220,255,243,var(--axo-control-edge))}
-#glassSettingsBack .modal:before{content:"";position:absolute;inset:0 0 auto;height:42%;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.16),transparent);opacity:.7}
+:root[data-theme=dark] #glassSettingsBack .modal{background:linear-gradient(145deg,rgba(8,35,29,calc(var(--axo-control-alpha) + .13)),rgba(5,27,23,calc(var(--axo-control-alpha) + .09)) 58%,rgba(12,44,36,calc(var(--axo-control-alpha) + .12)));border-color:rgba(220,255,243,var(--axo-control-edge))}
+#glassSettingsBack .modal:before{content:"";position:absolute;inset:0 0 auto;height:42%;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.17),transparent);opacity:.7}
 #glassSettingsBack .modal>*{position:relative}
-#glassSettingsBack .glass-control{padding:10px 12px;border:1px solid rgba(225,255,245,calc(var(--axo-control-edge)*.7));border-radius:15px;background:rgba(255,255,255,calc(var(--axo-control-alpha)*.48));box-shadow:inset 0 1px 0 rgba(255,255,255,.15)}
-:root[data-theme=dark] #glassSettingsBack .glass-control{background:rgba(0,15,12,calc(var(--axo-control-alpha)*.7))}
+#glassSettingsBack .glass-control{padding:10px 12px;border:1px solid rgba(220,255,244,calc(var(--axo-control-edge)*.7));border-radius:15px;background:rgba(215,245,234,calc(var(--axo-control-alpha)*.8));box-shadow:inset 0 1px 0 rgba(255,255,255,.15)}
+:root[data-theme=dark] #glassSettingsBack .glass-control{background:rgba(8,35,29,calc(var(--axo-control-alpha)*.9))}
 #glassSettingsBack .glass-control input[type=range]{appearance:none;-webkit-appearance:none;height:24px;padding:0;margin:3px 0 0;background:transparent;border:0;box-shadow:none;touch-action:pan-y}
 #glassSettingsBack .glass-control input[type=range]::-webkit-slider-runnable-track{height:5px;border-radius:99px;background:rgba(110,160,143,.30)}
 #glassSettingsBack .glass-control input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:19px;height:19px;margin-top:-7px;border-radius:50%;background:linear-gradient(145deg,#fff,#d7eee4);border:1px solid rgba(61,142,116,.38);box-shadow:0 2px 7px rgba(0,45,34,.18)}
 #glassSettingsBack .glass-control input[type=range]::-moz-range-track{height:5px;border-radius:99px;background:rgba(110,160,143,.30)}
 #glassSettingsBack .glass-control input[type=range]::-moz-range-thumb{width:19px;height:19px;border-radius:50%;background:#e4f5ed;border:1px solid rgba(61,142,116,.38);box-shadow:0 2px 7px rgba(0,45,34,.18)}
 #glassSettingsBack .modalactions{flex-wrap:wrap}
-@keyframes glassPanelIn{0%{opacity:0;transform:translateY(18px) scale(.94);filter:blur(7px)}65%{opacity:1;filter:blur(0)}100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+@keyframes glassTileExpand{0%{opacity:0;transform:scale(.12,.16);filter:blur(5px);border-radius:50%}65%{opacity:1;filter:blur(0);border-radius:22px}100%{opacity:1;transform:scale(1);filter:blur(0);border-radius:25px}}
 @media(prefers-reduced-motion:reduce){#glassSettingsBack .modal{animation:none}}
 
 </style></head>
@@ -347,14 +351,19 @@ html[data-theme=dark]{background-image:linear-gradient(135deg,rgba(5,23,19,.68),
 <script>
 
 const $=id=>document.getElementById(id),store={get(k,f){try{const v=localStorage.getItem('essential-'+k);return v===null?f:JSON.parse(v)}catch{return f}},set(k,v){try{localStorage.setItem('essential-'+k,JSON.stringify(v))}catch{}}};
-const brandmark=$('brandmark');
-brandmark.addEventListener('click',()=>{
- $('glassSettingsBack').classList.add('open');
- brandmark.setAttribute('aria-expanded','true');
-});
-$('closeGlassSettings').onclick=()=>{$('glassSettingsBack').classList.remove('open');brandmark.setAttribute('aria-expanded','false')};
-$('glassSettingsBack').addEventListener('click',e=>{if(e.target===$('glassSettingsBack'))$('closeGlassSettings').click()});
-$('openEssentialPage').onclick=()=>{brandmark.classList.add('is-expanded');window.setTimeout(()=>{window.location.href='https://4ksh2574.github.io/Essential/';},520)};
+const brandmark=$('brandmark'),glassBack=$('glassSettingsBack'),glassModal=glassBack.querySelector('.modal');
+function openGlassSettings(){
+ const r=brandmark.getBoundingClientRect();
+ glassModal.style.left=Math.max(10,Math.min(r.left,window.innerWidth-340))+'px';
+ glassModal.style.top=Math.max(8,r.top)+'px';
+ glassBack.classList.add('open');brandmark.setAttribute('aria-expanded','true');
+}
+function closeGlassSettings(){glassBack.classList.remove('open');brandmark.setAttribute('aria-expanded','false')}
+brandmark.addEventListener('click',openGlassSettings);
+$('closeGlassSettings').onclick=closeGlassSettings;
+document.addEventListener('pointerdown',e=>{if(glassBack.classList.contains('open')&&!glassModal.contains(e.target)&&!brandmark.contains(e.target))closeGlassSettings()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&glassBack.classList.contains('open'))closeGlassSettings()});
+$('openEssentialPage').onclick=()=>{closeGlassSettings();window.location.href='https://4ksh2574.github.io/Essential/'};
 const glassDefaults={opacity:12,blur:16,saturation:140,edge:18};
 function applyGlass(v){
  document.documentElement.style.setProperty('--axo-control-alpha',(v.opacity/100).toFixed(2));
