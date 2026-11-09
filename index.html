@@ -146,15 +146,13 @@
 }
 
 
-/* LAST-WINS mobile optical centering: overrides all earlier search rules */
+/* True geometric centering: no vertical offset */
+#searchForm.collapsed{position:relative!important}
 #searchForm.collapsed>svg{
  position:absolute!important;
  left:50%!important;
- top:calc(50% + 13px)!important;
+ top:50%!important;
  transform:translate(-50%,-50%)!important;
-}
-@media(max-width:570px){
- #searchForm.collapsed>svg{top:calc(50% + 13px)!important}
 }
 
 </style></head>
