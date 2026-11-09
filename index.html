@@ -232,9 +232,12 @@ body{background:transparent}
 const $=id=>document.getElementById(id),store={get(k,f){try{const v=localStorage.getItem('essential-'+k);return v===null?f:JSON.parse(v)}catch{return f}},set(k,v){try{localStorage.setItem('essential-'+k,JSON.stringify(v))}catch{}}};
 const brandmark=$('brandmark');
 brandmark.addEventListener('click',()=>{
- const expanded=brandmark.classList.toggle('is-expanded');
- brandmark.setAttribute('aria-expanded',String(expanded));
- if(expanded){window.scrollTo({top:0,behavior:'smooth'});}
+ if(brandmark.dataset.opening==='true')return;
+ brandmark.dataset.opening='true';
+ brandmark.classList.add('is-expanded');
+ brandmark.setAttribute('aria-expanded','true');
+ brandmark.setAttribute('aria-label','Opening Essential page');
+ window.setTimeout(()=>{window.location.href='https://4ksh2574.github.io/Essential/';},520);
 });
 const defaultLinks=[{name:'Gmail',url:'https://mail.google.com'},{name:'Calendar',url:'https://calendar.google.com'},{name:'Drive',url:'https://drive.google.com'},{name:'YouTube',url:'https://youtube.com'},{name:'GitHub',url:'https://github.com/4ksh2574'}];let links=store.get('links',defaultLinks),tasks=store.get('tasks',[]),weather={lat:null,lon:null,city:'Set your city',temp:null,code:null};
 function tick(){const d=new Date();$('dateLine').textContent=d.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric',year:'numeric'})+'  ·  '+d.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'});}tick();setInterval(tick,30000);
