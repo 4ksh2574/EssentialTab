@@ -472,6 +472,66 @@ html[data-theme=dark]{background-image:linear-gradient(135deg,rgba(5,23,19,.68),
  .brandmark.is-expanded .brandmark-config{padding:7px 13px 14px!important}
 }
 
+/* Unified AXo motion: horizontal and vertical geometry share one spring */
+:root{--axo-morph-duration:.56s;--axo-morph-ease:cubic-bezier(.2,.9,.2,1)}
+.brandmark{
+ transition:width var(--axo-morph-duration) var(--axo-morph-ease),
+ height var(--axo-morph-duration) var(--axo-morph-ease),
+ max-height var(--axo-morph-duration) var(--axo-morph-ease),
+ border-radius var(--axo-morph-duration) var(--axo-morph-ease),
+ box-shadow .35s ease,background .35s ease!important;
+}
+.brandmark-trigger{
+ transition:min-height var(--axo-morph-duration) var(--axo-morph-ease),
+ height var(--axo-morph-duration) var(--axo-morph-ease),
+ padding var(--axo-morph-duration) var(--axo-morph-ease),
+ gap var(--axo-morph-duration) var(--axo-morph-ease)!important;
+}
+.brandmark-config{
+ max-height:calc(100svh - 145px)!important;
+ overflow-x:hidden!important;
+ overflow-y:auto!important;
+ overscroll-behavior:contain;
+ scrollbar-width:thin;
+ transition:max-height var(--axo-morph-duration) var(--axo-morph-ease),
+ opacity var(--axo-morph-duration) ease,
+ transform var(--axo-morph-duration) var(--axo-morph-ease),
+ filter .35s ease,padding var(--axo-morph-duration) var(--axo-morph-ease)!important;
+}
+.brandmark.is-expanded{
+ max-height:calc(100svh - 76px)!important;
+ overflow:hidden!important;
+}
+.brandmark.is-expanded .brandmark-config{
+ max-height:calc(100svh - 145px)!important;
+ overflow-y:auto!important;
+}
+#searchForm{
+ transition:width var(--axo-morph-duration) var(--axo-morph-ease),
+ min-width var(--axo-morph-duration) var(--axo-morph-ease),
+ max-width var(--axo-morph-duration) var(--axo-morph-ease),
+ height var(--axo-morph-duration) var(--axo-morph-ease),
+ padding var(--axo-morph-duration) var(--axo-morph-ease),
+ gap var(--axo-morph-duration) var(--axo-morph-ease),
+ border-radius var(--axo-morph-duration) var(--axo-morph-ease),
+ box-shadow .4s ease,background .4s ease!important;
+}
+.weather-pill{
+ transition:width var(--axo-morph-duration) var(--axo-morph-ease),
+ height var(--axo-morph-duration) var(--axo-morph-ease),
+ border-radius var(--axo-morph-duration) var(--axo-morph-ease),
+ box-shadow .35s ease,background .35s ease!important;
+}
+.weather-details{
+ transition:max-height var(--axo-morph-duration) var(--axo-morph-ease),
+ opacity var(--axo-morph-duration) ease,
+ transform var(--axo-morph-duration) var(--axo-morph-ease),
+ filter .35s ease,padding var(--axo-morph-duration) var(--axo-morph-ease)!important;
+}
+@media(prefers-reduced-motion:reduce){
+ .brandmark,.brandmark-trigger,.brandmark-config,#searchForm,.weather-pill,.weather-details{transition:none!important}
+}
+
 </style></head>
 <body><div class="ambient"><i class="blob a"></i><i class="blob b"></i><i class="blob c"></i></div><div class="grain"></div>
 <div class="shell">
@@ -496,7 +556,9 @@ function openGlassSettings(){
  brandmark.setAttribute('aria-expanded','true');
  brandmarkConfig.setAttribute('aria-hidden','false');
  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-  brandmark.style.setProperty('height',brandmark.scrollHeight+'px','important');
+  const available=Math.max(180,window.innerHeight-76);
+  const target=Math.min(brandmark.scrollHeight,available);
+  brandmark.style.setProperty('height',target+'px','important');
  }));
 }
 function closeGlassSettings(){
