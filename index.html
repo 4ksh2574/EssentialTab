@@ -191,6 +191,22 @@
  #searchForm,#searchForm>svg:first-child,#searchForm input{transition:none!important}
 }
 
+
+/* Minimal Devanagari-shirorekha inspired English panel titles */
+.panelhead-minimal{justify-content:flex-start!important;min-height:34px;margin-bottom:2px}
+.paneltitle-shiro{
+ position:relative;display:inline-block;padding:8px 2px 0!important;
+ font-family:Georgia,"Times New Roman",serif!important;
+ font-size:23px!important;font-weight:600!important;letter-spacing:.015em!important;
+ line-height:1.15!important;color:var(--ink)!important;
+}
+.paneltitle-shiro:before{
+ content:"";position:absolute;left:0;right:0;top:2px;height:1.5px;
+ border-radius:2px;background:currentColor;opacity:.82;
+}
+.taskentry{margin-top:17px!important}
+.notes{margin-top:13px!important}
+
 </style></head>
 <body><div class="ambient"><i class="blob a"></i><i class="blob b"></i><i class="blob c"></i></div><div class="grain"></div>
 <div class="shell">
@@ -198,8 +214,8 @@
 <section class="hero"><div class="hero-topline"><p class="date-line" id="dateLine">Your day, at your pace.</p><form class="searchbox collapsed" id="searchForm" aria-label="Open search"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg><input id="searchInput" placeholder="Search the web or enter an address…" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Search"><span class="enter">↵</span><button class="searchgo" aria-label="Search" type="submit"><svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button></form></div>
 <div class="shortcuts-wrap"><div class="shortcuts-head"><div class="section-kicker">Your everyday places</div><button class="customize-links" id="customizeLinks" type="button">Customize</button></div><nav class="shortcuts" id="shortcuts"></nav></div></section>
 <section class="grid" aria-label="Personal dashboard">
-<article class="panel"><div class="panelhead"><div><div class="paneltitle">Little things to do</div><div class="panelhint">ONE STEP AT A TIME</div></div><div class="panelicon">✓</div></div><form class="taskentry" id="taskForm"><input id="taskInput" placeholder="Add a task…" maxlength="100" aria-label="New task"><button class="smalladd" type="submit" aria-label="Add task">+</button></form><div class="tasks" id="tasks"></div></article>
-<article class="panel"><div class="panelhead"><div><div class="paneltitle">A thought to keep</div><div class="panelhint">YOUR NOTES, SAVED HERE</div></div><div class="panelicon">✎</div></div><textarea class="notes" id="notes" placeholder="A thought, a reminder, an idea…"></textarea><div class="saved" id="saved">Saved on this device</div></article>
+<article class="panel"><div class="panelhead panelhead-minimal"><div class="paneltitle paneltitle-shiro">Tasks</div></div><form class="taskentry" id="taskForm"><input id="taskInput" placeholder="Add a task…" maxlength="100" aria-label="New task"><button class="smalladd" type="submit" aria-label="Add task">+</button></form><div class="tasks" id="tasks"></div></article>
+<article class="panel"><div class="panelhead panelhead-minimal"><div class="paneltitle paneltitle-shiro">Notes</div></div><textarea class="notes" id="notes" placeholder="A thought, a reminder, an idea…"></textarea><div class="saved" id="saved">Saved on this device</div></article>
 
 </section><footer class="footer"><span>ESSENTIAL · A LITTLE SPACE TO BEGIN</span><span>Made for the things that matter.</span></footer>
 </div>
