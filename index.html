@@ -219,53 +219,30 @@ body{background:transparent}
 html{background-color:var(--bg);background-image:linear-gradient(135deg,rgba(30,104,79,.22),rgba(33,112,91,.12) 48%,rgba(22,75,63,.2)),url('./assets/background.jpg');background-size:cover;background-position:center;background-repeat:no-repeat;background-attachment:scroll}
 html[data-theme=dark]{background-image:linear-gradient(135deg,rgba(5,23,19,.68),rgba(8,34,29,.62) 48%,rgba(5,20,18,.72)),url('./assets/background.jpg')}
 
-/* AXo Liquid Glass — optical surface pass
-   Visual-only finish: retain the existing layout, interaction states and motion curves. */
+/* AXo Liquid Glass — restrained optical finish
+   Natural translucency and soft reflections; preserve layout and motion. */
 :root{
-  --axo-glass-light:rgba(255,255,255,.16);
-  --axo-glass-light-strong:rgba(255,255,255,.22);
-  --axo-glass-dark:rgba(3,20,17,.30);
-  --axo-glass-edge:rgba(255,255,255,.42);
-  --axo-glass-top:rgba(255,255,255,.88);
+  --axo-glass-light:rgba(226,246,239,.105);
+  --axo-glass-light-strong:rgba(235,250,245,.16);
+  --axo-glass-dark:rgba(5,25,21,.22);
+  --axo-glass-edge:rgba(239,255,249,.19);
+  --axo-glass-top:rgba(255,255,255,.34);
 }
-:root[data-theme=dark]{
-  --axo-glass-edge:rgba(222,255,244,.24);
-  --axo-glass-top:rgba(240,255,249,.58);
+:root[data-theme=dark){
+  --axo-glass-edge:rgba(220,255,243,.13);
+  --axo-glass-top:rgba(235,255,248,.20);
 }
-/* Directional top bevel + a faint curved edge-light, not a flat all-around stroke. */
 .weather-pill,.iconbtn,.brandmark,.searchbox,.shortcut,.panel,
 .customize-links,.textbtn,.taskentry input,.notes{
-  border-top:1.5px solid var(--axo-glass-top)!important;
-  border-left:1px solid var(--axo-glass-edge)!important;
-  border-right:1px solid color-mix(in srgb,var(--axo-glass-edge) 72%,transparent)!important;
-  border-bottom:1px solid color-mix(in srgb,var(--axo-glass-edge) 48%,transparent)!important;
-  -webkit-backdrop-filter:blur(24px) saturate(180%);
-  backdrop-filter:blur(24px) saturate(180%);
-  box-shadow:
-    inset 0 1.5px 1px rgba(255,255,255,.48),
-    inset 0 -1px 2px rgba(0,20,15,.055),
-    0 16px 36px rgba(0,18,15,.13);
+  border:1px solid var(--axo-glass-edge)!important;
+  border-top-color:var(--axo-glass-top)!important;
+  -webkit-backdrop-filter:blur(18px) saturate(145%);
+  backdrop-filter:blur(18px) saturate(145%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 8px 24px rgba(0,25,20,.075);
 }
-:root[data-theme=dark] .weather-pill,
-:root[data-theme=dark] .iconbtn,
-:root[data-theme=dark] .searchbox,
-:root[data-theme=dark] .shortcut,
-:root[data-theme=dark] .panel,
-:root[data-theme=dark] .customize-links,
-:root[data-theme=dark] .textbtn,
-:root[data-theme=dark] .taskentry input,
-:root[data-theme=dark] .notes{
-  box-shadow:
-    inset 0 1.5px 1px rgba(240,255,249,.22),
-    inset 0 -1px 2px rgba(0,0,0,.16),
-    0 18px 40px rgba(0,0,0,.24);
-}
-/* Light bends around the perimeter through layered radial highlights; the wallpaper remains visible. */
 .weather-pill,.iconbtn,.searchbox,.shortcut,.panel,
 .customize-links,.textbtn,.taskentry input,.notes{
-  background-image:
-    radial-gradient(ellipse at 8% 0%,rgba(255,255,255,.24),transparent 48%),
-    radial-gradient(ellipse at 100% 100%,rgba(107,213,184,.10),transparent 52%);
+  background-image:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.012) 58%,rgba(67,171,143,.035));
 }
 :root[data-theme=dark] .weather-pill,
 :root[data-theme=dark] .iconbtn,
@@ -276,22 +253,13 @@ html[data-theme=dark]{background-image:linear-gradient(135deg,rgba(5,23,19,.68),
 :root[data-theme=dark] .textbtn,
 :root[data-theme=dark] .taskentry input,
 :root[data-theme=dark] .notes{
-  background-image:
-    radial-gradient(ellipse at 8% 0%,rgba(235,255,247,.13),transparent 48%),
-    radial-gradient(ellipse at 100% 100%,rgba(74,190,158,.09),transparent 52%);
+  background-image:linear-gradient(145deg,rgba(230,255,247,.055),rgba(230,255,247,.012) 58%,rgba(48,157,128,.045));
+  box-shadow:inset 0 1px 0 rgba(240,255,249,.10),0 10px 28px rgba(0,0,0,.12);
 }
-/* Keep the AXo mark's signature teal identity while giving it a thicker glass bevel. */
 .brandmark{
-  border-top-color:rgba(255,255,255,.98)!important;
-  border-left-color:rgba(255,255,255,.72)!important;
-  border-right-color:rgba(73,160,135,.35)!important;
-  border-bottom-color:rgba(54,143,119,.32)!important;
-  box-shadow:
-    inset 0 1.5px 1px rgba(255,255,255,.98),
-    inset 0 -1px 2px rgba(34,125,101,.16),
-    0 12px 30px rgba(18,103,83,.20)!important;
+  border-color:rgba(225,255,246,.28)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 8px 22px rgba(18,103,83,.12)!important;
 }
-/* Nested controls read as a second, inset pane of glass. */
 .taskentry input,.notes{
   background-color:var(--axo-glass-light)!important;
   border-radius:14px;
@@ -300,12 +268,11 @@ html[data-theme=dark]{background-image:linear-gradient(135deg,rgba(5,23,19,.68),
 :root[data-theme=dark] .notes{
   background-color:var(--axo-glass-dark)!important;
 }
-/* Preserve the existing responsive geometry and spring animations; only strengthen the optical finish. */
 @media(max-width:700px){
   .weather-pill,.iconbtn,.brandmark,.searchbox,.shortcut,.panel,
   .customize-links,.textbtn,.taskentry input,.notes{
-    -webkit-backdrop-filter:blur(22px) saturate(175%);
-    backdrop-filter:blur(22px) saturate(175%);
+    -webkit-backdrop-filter:blur(16px) saturate(140%);
+    backdrop-filter:blur(16px) saturate(140%);
   }
 }
 @media(prefers-reduced-motion:reduce){
