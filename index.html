@@ -551,25 +551,27 @@ const $=id=>document.getElementById(id),store={get(k,f){try{const v=localStorage
 const brandmark=$('brandmark'),brandmarkTrigger=$('brandmarkTrigger'),brandmarkConfig=$('brandmarkConfig');
 function openGlassSettings(){
  if(brandmark.classList.contains('is-expanded'))return;
- brandmark.style.setProperty('height',brandmark.getBoundingClientRect().height+'px','important');
+ // Capture the compact geometry, then change width and height in the same style frame.
+ const current=brandmark.getBoundingClientRect().height;
+ brandmark.style.setProperty('height',current+'px','important');
+ brandmark.getBoundingClientRect();
  brandmark.classList.add('is-expanded');
  brandmark.setAttribute('aria-expanded','true');
  brandmarkConfig.setAttribute('aria-hidden','false');
- requestAnimationFrame(()=>requestAnimationFrame(()=>{
-  const available=Math.max(180,window.innerHeight-76);
-  const target=Math.min(brandmark.scrollHeight,available);
-  brandmark.style.setProperty('height',target+'px','important');
- }));
+ const available=Math.max(180,window.innerHeight-76);
+ const target=Math.min(brandmark.scrollHeight,available);
+ brandmark.style.setProperty('height',target+'px','important');
 }
 function closeGlassSettings(){
  if(!brandmark.classList.contains('is-expanded'))return;
+ // Freeze the current size before removing the expanded state, then release both axes together.
  const current=brandmark.getBoundingClientRect().height;
  brandmark.style.setProperty('height',current+'px','important');
  brandmark.getBoundingClientRect();
  brandmark.classList.remove('is-expanded');
  brandmark.setAttribute('aria-expanded','false');
  brandmarkConfig.setAttribute('aria-hidden','true');
- requestAnimationFrame(()=>{brandmark.style.setProperty('height','40px','important')});
+ brandmark.style.setProperty('height','40px','important');
 }
 brandmarkTrigger.addEventListener('click',()=>brandmark.classList.contains('is-expanded')?closeGlassSettings():openGlassSettings());
 brandmark.addEventListener('transitionend',e=>{if(e.propertyName==='height'&&brandmark.classList.contains('is-expanded'))brandmark.style.setProperty('height','auto','important')});
