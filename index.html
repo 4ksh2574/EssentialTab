@@ -155,6 +155,42 @@
  transform:translate(-50%,-50%)!important;
 }
 
+
+/* Restore the search pill's full spring morph in both directions */
+#searchForm{
+ position:relative!important;
+ transition:width .58s cubic-bezier(.2,.9,.2,1),height .52s cubic-bezier(.2,.9,.2,1),
+ padding .48s cubic-bezier(.2,.9,.2,1),border-radius .5s cubic-bezier(.2,.9,.2,1),
+ box-shadow .4s ease,background .4s ease!important;
+ will-change:width,height,border-radius;
+}
+#searchForm>svg:first-child{
+ position:absolute!important;left:50%!important;top:50%!important;
+ width:19px!important;height:19px!important;flex:none!important;
+ margin:0!important;padding:0!important;
+ transform:translate(-50%,-50%) scale(1)!important;
+ transform-origin:center!important;
+ transition:left .55s cubic-bezier(.2,.9,.2,1),top .55s cubic-bezier(.2,.9,.2,1),
+ transform .55s cubic-bezier(.2,.9,.2,1),opacity .25s ease!important;
+ z-index:2;
+}
+#searchForm.expanded>svg:first-child{
+ left:15px!important;top:50%!important;
+ transform:translateY(-50%) scale(.94)!important;
+}
+#searchForm input{
+ transition:opacity .28s ease,width .48s cubic-bezier(.2,.9,.2,1)!important;
+}
+#searchForm.expanded input{padding-left:28px!important}
+@media(max-width:570px){
+ #searchForm>svg:first-child{width:17px!important;height:17px!important}
+ #searchForm.expanded>svg:first-child{left:12px!important}
+ #searchForm.expanded input{padding-left:24px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #searchForm,#searchForm>svg:first-child,#searchForm input{transition:none!important}
+}
+
 </style></head>
 <body><div class="ambient"><i class="blob a"></i><i class="blob b"></i><i class="blob c"></i></div><div class="grain"></div>
 <div class="shell">
