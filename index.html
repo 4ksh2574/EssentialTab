@@ -296,6 +296,35 @@ html[data-theme=dark]{background-image:linear-gradient(135deg,rgba(5,23,19,.68),
 :root[data-theme=dark] .weather-pill,:root[data-theme=dark] .iconbtn,:root[data-theme=dark] .searchbox,:root[data-theme=dark] .shortcut,:root[data-theme=dark] .panel,:root[data-theme=dark] .customize-links,:root[data-theme=dark] .textbtn,:root[data-theme=dark] .taskentry input,:root[data-theme=dark] .notes{background-color:rgba(8,35,29,calc(var(--axo-control-alpha) + .04))}
 .glass-control{display:grid;gap:7px;margin:13px 0}.glass-control label{display:flex;justify-content:space-between;gap:12px;font-size:11px;color:var(--muted)}.glass-control input{width:100%;accent-color:var(--accent);margin:0}.glass-note{font-size:10px;color:var(--muted);line-height:1.5}
 
+
+/* AXo Liquid Glass panel: same material as the controls, with an in-place spring reveal */
+#glassSettingsBack{background:rgba(8,24,20,.24);-webkit-backdrop-filter:blur(9px) saturate(125%);backdrop-filter:blur(9px) saturate(125%);perspective:900px}
+#glassSettingsBack .modal{
+ position:relative;overflow:hidden;
+ width:min(430px,100%);max-height:min(82svh,720px);overflow-y:auto;
+ color:var(--ink);
+ background:linear-gradient(145deg,rgba(235,255,247,calc(var(--axo-control-alpha) + .20)),rgba(200,238,224,calc(var(--axo-control-alpha) + .09)) 52%,rgba(225,250,240,calc(var(--axo-control-alpha) + .14)));
+ border:1px solid rgba(225,255,245,var(--axo-control-edge));
+ -webkit-backdrop-filter:blur(var(--axo-control-blur)) saturate(var(--axo-control-sat));
+ backdrop-filter:blur(var(--axo-control-blur)) saturate(var(--axo-control-sat));
+ box-shadow:0 24px 70px rgba(0,35,27,.19),inset 0 1px 0 rgba(255,255,255,.42),inset 0 -1px 0 rgba(255,255,255,.08);
+ transform-origin:top left;
+ animation:glassPanelIn .52s cubic-bezier(.18,.88,.22,1) both;
+}
+:root[data-theme=dark] #glassSettingsBack .modal{background:linear-gradient(145deg,rgba(20,58,48,calc(var(--axo-control-alpha) + .26)),rgba(7,34,29,calc(var(--axo-control-alpha) + .22)) 58%,rgba(17,51,43,calc(var(--axo-control-alpha) + .25)));border-color:rgba(220,255,243,var(--axo-control-edge))}
+#glassSettingsBack .modal:before{content:"";position:absolute;inset:0 0 auto;height:42%;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.16),transparent);opacity:.7}
+#glassSettingsBack .modal>*{position:relative}
+#glassSettingsBack .glass-control{padding:10px 12px;border:1px solid rgba(225,255,245,calc(var(--axo-control-edge)*.7));border-radius:15px;background:rgba(255,255,255,calc(var(--axo-control-alpha)*.48));box-shadow:inset 0 1px 0 rgba(255,255,255,.15)}
+:root[data-theme=dark] #glassSettingsBack .glass-control{background:rgba(0,15,12,calc(var(--axo-control-alpha)*.7))}
+#glassSettingsBack .glass-control input[type=range]{appearance:none;-webkit-appearance:none;height:24px;padding:0;margin:3px 0 0;background:transparent;border:0;box-shadow:none;touch-action:pan-y}
+#glassSettingsBack .glass-control input[type=range]::-webkit-slider-runnable-track{height:5px;border-radius:99px;background:rgba(110,160,143,.30)}
+#glassSettingsBack .glass-control input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:19px;height:19px;margin-top:-7px;border-radius:50%;background:linear-gradient(145deg,#fff,#d7eee4);border:1px solid rgba(61,142,116,.38);box-shadow:0 2px 7px rgba(0,45,34,.18)}
+#glassSettingsBack .glass-control input[type=range]::-moz-range-track{height:5px;border-radius:99px;background:rgba(110,160,143,.30)}
+#glassSettingsBack .glass-control input[type=range]::-moz-range-thumb{width:19px;height:19px;border-radius:50%;background:#e4f5ed;border:1px solid rgba(61,142,116,.38);box-shadow:0 2px 7px rgba(0,45,34,.18)}
+#glassSettingsBack .modalactions{flex-wrap:wrap}
+@keyframes glassPanelIn{0%{opacity:0;transform:translateY(18px) scale(.94);filter:blur(7px)}65%{opacity:1;filter:blur(0)}100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+@media(prefers-reduced-motion:reduce){#glassSettingsBack .modal{animation:none}}
+
 </style></head>
 <body><div class="ambient"><i class="blob a"></i><i class="blob b"></i><i class="blob c"></i></div><div class="grain"></div>
 <div class="shell">
