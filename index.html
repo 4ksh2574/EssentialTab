@@ -401,6 +401,47 @@ html[data-theme=dark]{background-image:linear-gradient(135deg,rgba(5,23,19,.68),
   .brandmark,.brandmark-trigger,.brandmark-trigger img,.brandmark-config{transition:none!important}
 }
 
+
+/* Correct the top edge and make both controls collapse as one continuous morph */
+.brandmark{
+  height:40px!important;
+  max-height:none!important;
+  overflow:hidden!important;
+  will-change:width,height,border-radius;
+  transition:width .55s cubic-bezier(.2,.9,.2,1),height .55s cubic-bezier(.2,.9,.2,1),border-radius .45s cubic-bezier(.2,.9,.2,1),box-shadow .35s ease,background .35s ease!important;
+}
+.brandmark.is-expanded{
+  height:auto;
+  max-height:none!important;
+  overflow:hidden!important;
+}
+.brandmark.is-expanded .brandmark-config{
+  max-height:none!important;
+  overflow:visible!important;
+  padding-top:8px!important;
+  padding-bottom:17px!important;
+}
+.brandmark-config{
+  box-sizing:border-box;
+  max-height:0!important;
+  padding-top:0!important;
+  padding-bottom:0!important;
+  overflow:hidden!important;
+}
+.brandmark.is-expanded .brandmark-config{
+  max-height:none!important;
+  padding:8px 17px 17px!important;
+}
+.searchbox input,.searchbox .enter,.searchbox .searchgo{
+  transition:width .48s cubic-bezier(.2,.9,.2,1),min-width .48s cubic-bezier(.2,.9,.2,1),flex-basis .48s cubic-bezier(.2,.9,.2,1),opacity .24s ease,padding .4s cubic-bezier(.2,.9,.2,1),border-width .3s ease,transform .35s cubic-bezier(.2,.9,.2,1)!important;
+}
+.searchbox.collapsed input,.searchbox.collapsed .enter,.searchbox.collapsed .searchgo{
+  transition:width .48s cubic-bezier(.2,.9,.2,1),min-width .48s cubic-bezier(.2,.9,.2,1),flex-basis .48s cubic-bezier(.2,.9,.2,1),opacity .24s ease,padding .4s cubic-bezier(.2,.9,.2,1),border-width .3s ease!important;
+}
+@media(max-width:570px){
+ .brandmark.is-expanded .brandmark-config{padding:7px 13px 14px!important}
+}
+
 </style></head>
 <body><div class="ambient"><i class="blob a"></i><i class="blob b"></i><i class="blob c"></i></div><div class="grain"></div>
 <div class="shell">
@@ -418,8 +459,26 @@ html[data-theme=dark]{background-image:linear-gradient(135deg,rgba(5,23,19,.68),
 
 const $=id=>document.getElementById(id),store={get(k,f){try{const v=localStorage.getItem('essential-'+k);return v===null?f:JSON.parse(v)}catch{return f}},set(k,v){try{localStorage.setItem('essential-'+k,JSON.stringify(v))}catch{}}};
 const brandmark=$('brandmark'),brandmarkTrigger=$('brandmarkTrigger'),brandmarkConfig=$('brandmarkConfig');
-function openGlassSettings(){brandmark.classList.add('is-expanded');brandmark.setAttribute('aria-expanded','true');brandmarkConfig.setAttribute('aria-hidden','false')}
-function closeGlassSettings(){brandmark.classList.remove('is-expanded');brandmark.setAttribute('aria-expanded','false');brandmarkConfig.setAttribute('aria-hidden','true')}
+function openGlassSettings(){
+ if(brandmark.classList.contains('is-expanded'))return;
+ brandmark.style.height=brandmark.getBoundingClientRect().height+'px';
+ brandmark.classList.add('is-expanded');
+ brandmark.setAttribute('aria-expanded','true');
+ brandmarkConfig.setAttribute('aria-hidden','false');
+ requestAnimationFrame(()=>requestAnimationFrame(()=>{
+  brandmark.style.height=brandmark.scrollHeight+'px';
+ }));
+}
+function closeGlassSettings(){
+ if(!brandmark.classList.contains('is-expanded'))return;
+ const current=brandmark.getBoundingClientRect().height;
+ brandmark.style.height=current+'px';
+ brandmark.getBoundingClientRect();
+ brandmark.classList.remove('is-expanded');
+ brandmark.setAttribute('aria-expanded','false');
+ brandmarkConfig.setAttribute('aria-hidden','true');
+ requestAnimationFrame(()=>{brandmark.style.height='40px'});
+}
 brandmarkTrigger.addEventListener('click',()=>brandmark.classList.contains('is-expanded')?closeGlassSettings():openGlassSettings());
 $('closeGlassSettings').onclick=closeGlassSettings;
 document.addEventListener('pointerdown',e=>{if(brandmark.classList.contains('is-expanded')&&!brandmark.contains(e.target))closeGlassSettings()});
