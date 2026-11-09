@@ -532,6 +532,17 @@ html[data-theme=dark]{background-image:linear-gradient(135deg,rgba(5,23,19,.68),
  .brandmark,.brandmark-trigger,.brandmark-config,#searchForm,.weather-pill,.weather-details{transition:none!important}
 }
 
+
+/* AXo tile geometry is driven by one shared per-frame progress value. */
+.brandmark.axo-morphing{
+ transition:border-radius .56s cubic-bezier(.2,.9,.2,1),box-shadow .35s ease,background .35s ease!important;
+ will-change:width,height;
+}
+.brandmark.axo-morphing .brandmark-trigger{transition:none!important}
+.brandmark.axo-morphing .brandmark-config{
+ transition:opacity .56s ease,transform .56s cubic-bezier(.2,.9,.2,1),filter .35s ease!important;
+ overflow:hidden!important;
+}
 </style></head>
 <body><div class="ambient"><i class="blob a"></i><i class="blob b"></i><i class="blob c"></i></div><div class="grain"></div>
 <div class="shell">
@@ -549,32 +560,87 @@ html[data-theme=dark]{background-image:linear-gradient(135deg,rgba(5,23,19,.68),
 
 const $=id=>document.getElementById(id),store={get(k,f){try{const v=localStorage.getItem('essential-'+k);return v===null?f:JSON.parse(v)}catch{return f}},set(k,v){try{localStorage.setItem('essential-'+k,JSON.stringify(v))}catch{}}};
 const brandmark=$('brandmark'),brandmarkTrigger=$('brandmarkTrigger'),brandmarkConfig=$('brandmarkConfig');
-function openGlassSettings(){
- if(brandmark.classList.contains('is-expanded'))return;
- // Capture the compact geometry, then change width and height in the same style frame.
- const current=brandmark.getBoundingClientRect().height;
- brandmark.style.setProperty('height',current+'px','important');
- brandmark.getBoundingClientRect();
- brandmark.classList.add('is-expanded');
- brandmark.setAttribute('aria-expanded','true');
- brandmarkConfig.setAttribute('aria-hidden','false');
- const available=Math.max(180,window.innerHeight-76);
- const target=Math.min(brandmark.scrollHeight,available);
- brandmark.style.setProperty('height',target+'px','important');
+let brandmarkMorphFrame=0;
+function axoMorphEase(t){
+ const x1=.2,y1=.9,x2=.2,y2=1;
+ const cx=3*x1,bx=3*(x2-x1)-cx,ax=1-cx-bx;
+ const cy=3*y1,by=3*(y2-y1)-cy,ay=1-cy-by;
+ let u=t;
+ for(let i=0;i<6;i++){
+  const x=((ax*u+bx)*u+cx)*u;
+  const dx=(3*ax*u+2*bx)*u+cx;
+  if(Math.abs(dx)<1e-6)break;
+  u=Math.max(0,Math.min(1,u-(x-t)/dx));
+ }
+ return ((ay*u+by)*u+cy)*u;
 }
-function closeGlassSettings(){
- if(!brandmark.classList.contains('is-expanded'))return;
- // Freeze the current size before removing the expanded state, then release both axes together.
- const current=brandmark.getBoundingClientRect().height;
- brandmark.style.setProperty('height',current+'px','important');
+function morphGlassSettings(expand){
+ if(expand===brandmark.classList.contains('is-expanded')&&!brandmarkMorphFrame)return;
+ if(brandmarkMorphFrame)cancelAnimationFrame(brandmarkMorphFrame);
+ const fromRect=brandmark.getBoundingClientRect();
+ const from={width:fromRect.width,height:fromRect.height,config:brandmarkConfig.getBoundingClientRect().height};
+ brandmark.classList.add('axo-morphing');
+ brandmark.style.setProperty('width',from.width+'px','important');
+ brandmark.style.setProperty('height',from.height+'px','important');
+ brandmark.style.setProperty('max-width',from.width+'px','important');
+ brandmarkConfig.style.setProperty('max-height',from.config+'px','important');
  brandmark.getBoundingClientRect();
- brandmark.classList.remove('is-expanded');
- brandmark.setAttribute('aria-expanded','false');
- brandmarkConfig.setAttribute('aria-hidden','true');
- brandmark.style.setProperty('height','40px','important');
+
+ if(expand){
+  brandmark.classList.add('is-expanded');
+  brandmark.setAttribute('aria-expanded','true');
+  brandmarkConfig.setAttribute('aria-hidden','false');
+  brandmarkConfig.style.removeProperty('max-height');
+  const configTarget=brandmarkConfig.getBoundingClientRect().height;
+  brandmarkConfig.style.setProperty('max-height',configTarget+'px','important');
+ }else{
+  brandmark.classList.remove('is-expanded');
+  brandmark.setAttribute('aria-expanded','false');
+  brandmarkConfig.setAttribute('aria-hidden','true');
+  brandmarkConfig.style.setProperty('max-height','0px','important');
+ }
+
+ brandmark.style.removeProperty('width');
+ brandmark.style.removeProperty('height');
+ brandmark.style.removeProperty('max-width');
+ const toRect=brandmark.getBoundingClientRect();
+ const to={width:toRect.width,height:toRect.height,config:expand?brandmarkConfig.getBoundingClientRect().height:0};
+
+ brandmark.style.setProperty('width',from.width+'px','important');
+ brandmark.style.setProperty('height',from.height+'px','important');
+ brandmark.style.setProperty('max-width',from.width+'px','important');
+ brandmarkConfig.style.setProperty('max-height',from.config+'px','important');
+ brandmark.getBoundingClientRect();
+
+ const duration=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:560;
+ const start=performance.now();
+ function finish(){
+  brandmark.style.removeProperty('width');
+  brandmark.style.removeProperty('height');
+  brandmark.style.removeProperty('max-width');
+  brandmarkConfig.style.removeProperty('max-height');
+  brandmark.classList.remove('axo-morphing');
+  brandmarkMorphFrame=0;
+ }
+ function step(now){
+  const p=duration?Math.min(1,(now-start)/duration):1;
+  const eased=axoMorphEase(p);
+  const width=from.width+(to.width-from.width)*eased;
+  const height=from.height+(to.height-from.height)*eased;
+  const config=from.config+(to.config-from.config)*eased;
+  brandmark.style.setProperty('width',width+'px','important');
+  brandmark.style.setProperty('height',height+'px','important');
+  brandmark.style.setProperty('max-width',width+'px','important');
+  brandmarkConfig.style.setProperty('max-height',config+'px','important');
+  if(p<1)brandmarkMorphFrame=requestAnimationFrame(step);
+  else finish();
+ }
+ brandmarkMorphFrame=requestAnimationFrame(step);
 }
+function openGlassSettings(){morphGlassSettings(true)}
+function closeGlassSettings(){morphGlassSettings(false)}
 brandmarkTrigger.addEventListener('click',()=>brandmark.classList.contains('is-expanded')?closeGlassSettings():openGlassSettings());
-brandmark.addEventListener('transitionend',e=>{if(e.propertyName==='height'&&brandmark.classList.contains('is-expanded'))brandmark.style.setProperty('height','auto','important')});
+
 $('closeGlassSettings').onclick=closeGlassSettings;
 document.addEventListener('pointerdown',e=>{if(brandmark.classList.contains('is-expanded')&&!brandmark.contains(e.target))closeGlassSettings()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&brandmark.classList.contains('is-expanded'))closeGlassSettings()});
