@@ -205,6 +205,14 @@
 .taskentry{margin-top:13px!important}
 .notes{margin-top:13px!important}
 
+
+/* Keep the wallpaper above the page canvas and the interface above the wallpaper.
+   A negative stacking level put .ambient behind the body's opaque background. */
+html{background:var(--bg)}
+body{background:transparent}
+.ambient{z-index:0;pointer-events:none}
+.shell{position:relative;z-index:1}
+
 </style></head>
 <body><div class="ambient"><i class="blob a"></i><i class="blob b"></i><i class="blob c"></i></div><div class="grain"></div>
 <div class="shell">
