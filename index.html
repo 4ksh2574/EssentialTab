@@ -132,6 +132,19 @@
 }
 
 
+
+/* Hard override: keep the collapsed magnifier centered in the full pill */
+#searchForm.collapsed{position:relative!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important}
+#searchForm.collapsed>svg{
+ position:absolute!important;left:50%!important;top:50%!important;
+ width:19px!important;height:19px!important;min-width:19px!important;
+ margin:0!important;padding:0!important;flex:none!important;
+ transform:translate(-50%,-50%)!important;inset:auto!important;
+}
+@media(max-width:570px){
+ #searchForm.collapsed>svg{width:17px!important;height:17px!important;min-width:17px!important}
+}
+
 </style></head>
 <body><div class="ambient"><i class="blob a"></i><i class="blob b"></i><i class="blob c"></i></div><div class="grain"></div>
 <div class="shell">
